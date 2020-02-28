@@ -4,5 +4,6 @@ public interface Register {
 
     int getValue();
     void setValue(int value);
+    String toString();
 
 }
