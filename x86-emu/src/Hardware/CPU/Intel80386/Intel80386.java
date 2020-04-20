@@ -1,12 +1,15 @@
 package Hardware.CPU.Intel80386;
 
 import Hardware.CPU.CPU;
+import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
 import Hardware.CPU.Intel80386.Registers.Flags.Flags;
 import Hardware.CPU.Intel80386.Registers.General.Register16;
 import Hardware.CPU.Intel80386.Registers.General.Register32;
 import Hardware.CPU.Intel80386.Registers.General.Register8;
 import Hardware.CPU.Intel80386.Registers.General.Register8Hi;
 import Hardware.CPU.Intel80386.Registers.General.Register8Lo;
+import Hardware.CPU.Intel80386.MemoryManagement.MMU;
+import Hardware.Memory.Memory;
 
 public class Intel80386 implements CPU {
 
@@ -14,8 +17,9 @@ public class Intel80386 implements CPU {
     public Register16 ax, bx, cx, dx, sp, bp, si, di;
     public Register8 ah, bh, ch, dh, al, bl, cl, dl;
     public Flags flags;
+    public MMU mmu;
 
-    public Intel80386() {
+    public Intel80386(Memory memory) {
         eax = new Register32("eax");
         ebx = new Register32("ebx");
         ecx = new Register32("ecx");
@@ -41,6 +45,17 @@ public class Intel80386 implements CPU {
         cl = new Register8Lo("cl", ecx);
         dl = new Register8Lo("dl", edx);
         flags = new Flags();
+        mmu = new MMU(this, memory);
+    }
+
+    public void pushStack(Operand operand, int byteAmount) {
+        esp.setValue(esp.getValue() - byteAmount);
+        setMemory(esp.getValue(), operand.getValue());
+    }
+
+    public void setMemory(int address, int data) {
+        mmu.writeMemory(address, data);
+        
     }
 
     @Override
