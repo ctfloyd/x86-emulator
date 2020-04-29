@@ -22,7 +22,7 @@ public class MMU {
     }
 
     public int translateToPhysical(int vAddress) {
-        return address;
+        return vAddress;
     }
 
 }

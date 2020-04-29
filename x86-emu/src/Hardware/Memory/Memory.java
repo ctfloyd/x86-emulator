@@ -1,5 +1,6 @@
 package Hardware.Memory;
 
+
 public class Memory {
 
     int[] memory;
