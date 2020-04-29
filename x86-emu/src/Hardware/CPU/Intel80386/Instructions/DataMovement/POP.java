@@ -1,12 +1,12 @@
 package Hardware.CPU.Intel80386.Instructions.DataMovement;
 
-import Hardware.CPU.CPU;
+import Hardware.CPU.Intel80386.Intel80386;
 import Hardware.CPU.Intel80386.Instructions.Instruction;
 import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
 
 public class POP implements Instruction {
 
-    Intel80386 cpu;
+    Intel80386 cpu;	
     Operand src;
 
     public POP(Intel80386 cpu, Operand src) {
@@ -16,7 +16,7 @@ public class POP implements Instruction {
 
     @Override
     public void execute() {
-        cpu.popStack(src, 4);
+        src.setValue(cpu.popStack());
     }
 
     @Override

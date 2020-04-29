@@ -1,9 +1,8 @@
 package Hardware.CPU.Intel80386.Instructions.DataMovement;
 
-import Hardware.CPU.CPU;
 import Hardware.CPU.Intel80386.Intel80386;
 import Hardware.CPU.Intel80386.Instructions.Instruction;
-import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
+import Util.DataType;
 
 public class PUSHA implements Instruction {
 
@@ -16,14 +15,14 @@ public class PUSHA implements Instruction {
     @Override
     public void execute() {
         int initialStackValue = cpu.esp.getValue();
-        cpu.pushStack(cpu.eax.getValue(), 4);
-        cpu.pushStack(cpu.ecx.getValue(), 4);
-        cpu.pushStack(cpu.edx.getValue(), 4);
-        cpu.pushStack(cpu.ebx.getValue(), 4);
-        cpu.pushStack(initialStackValue , 4);
-        cpu.pushStack(cpu.ebp.getValue(), 4);
-        cpu.pushStack(cpu.esi.getValue(), 4);
-        cpu.pushStack(cpu.edi.getValue(), 4);
+        cpu.pushStack(cpu.eax.getValue(), DataType.DoubleWord);
+        cpu.pushStack(cpu.ecx.getValue(), DataType.DoubleWord);
+        cpu.pushStack(cpu.edx.getValue(), DataType.DoubleWord);
+        cpu.pushStack(cpu.ebx.getValue(), DataType.DoubleWord);
+        cpu.pushStack(initialStackValue , DataType.DoubleWord);
+        cpu.pushStack(cpu.ebp.getValue(), DataType.DoubleWord);
+        cpu.pushStack(cpu.esi.getValue(), DataType.DoubleWord);
+        cpu.pushStack(cpu.edi.getValue(), DataType.DoubleWord);
     }
 
     @Override

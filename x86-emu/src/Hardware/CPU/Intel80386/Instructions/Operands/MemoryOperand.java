@@ -21,7 +21,7 @@ public class MemoryOperand implements Operand {
 
     @Override
     public String toString() {
-
+    	return "";
     }
 
 }

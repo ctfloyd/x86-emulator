@@ -1,8 +1,8 @@
 package Hardware.CPU.Intel80386.Instructions.DataMovement;
 
-import Hardware.CPU.CPU;
+import Hardware.CPU.Intel80386.Intel80386;
 import Hardware.CPU.Intel80386.Instructions.Instruction;
-import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
+
 
 public class CDQ implements Instruction {
 

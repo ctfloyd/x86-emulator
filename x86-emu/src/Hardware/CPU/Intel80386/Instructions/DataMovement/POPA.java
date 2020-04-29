@@ -1,8 +1,7 @@
 package Hardware.CPU.Intel80386.Instructions.DataMovement;
 
-import Hardware.CPU.CPU;
+import Hardware.CPU.Intel80386.Intel80386;
 import Hardware.CPU.Intel80386.Instructions.Instruction;
-import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
 
 public class POPA implements Instruction {
 
@@ -14,20 +13,19 @@ public class POPA implements Instruction {
 
     @Override
     public void execute() {
-        cpu.popStack(cpu.edi, 4);
-        cpu.popStack(cpu.esi, 4);
-        cpu.popStack(cpu.ebp, 4);
-        cpu.popStack(null, 4);
-        cpu.popStack(cpu.ebx, 4);
-        cpu.popStack(cpu.edx, 4);
-        cpu.popStack(cpu.ecx, 4);
-        cpu.popStack(cpu.ebx, 4);
-        cpu.popStack(cpu.eax, 4);
+    	cpu.edi.setValue(cpu.popStack());
+    	cpu.esi.setValue(cpu.popStack());
+    	cpu.ebp.setValue(cpu.popStack());
+    	cpu.popStack();
+    	cpu.ebx.setValue(cpu.popStack());
+    	cpu.edx.setValue(cpu.popStack());
+    	cpu.ecx.setValue(cpu.popStack());
+    	cpu.eax.setValue(cpu.popStack());
     }
 
     @Override
     public String toString() {
-        return String.format("POPA", src.toString());
+        return String.format("POPA");
     }
 
 }
