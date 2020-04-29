@@ -2,14 +2,15 @@ package Hardware.CPU.Intel80386;
 
 import Hardware.CPU.CPU;
 import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
+import Hardware.CPU.Intel80386.MemoryManagement.MMU;
 import Hardware.CPU.Intel80386.Registers.Flags.Flags;
 import Hardware.CPU.Intel80386.Registers.General.Register16;
 import Hardware.CPU.Intel80386.Registers.General.Register32;
 import Hardware.CPU.Intel80386.Registers.General.Register8;
 import Hardware.CPU.Intel80386.Registers.General.Register8Hi;
 import Hardware.CPU.Intel80386.Registers.General.Register8Lo;
-import Hardware.CPU.Intel80386.MemoryManagement.MMU;
 import Hardware.Memory.Memory;
+import Util.DataType;
 
 public class Intel80386 implements CPU {
 
@@ -46,21 +47,19 @@ public class Intel80386 implements CPU {
         dl = new Register8Lo("dl", edx);
         flags = new Flags();
         mmu = new MMU(this, memory);
+
+
     }
 
-    public void pushStack(Operand operand, int byteAmount) {
-        esp.setValue(esp.getValue() - byteAmount);
-        writeMemory(esp.getValue(), operand.getValue());
+    public void pushStack(int data, DataType type) {
+        esp.setValue(esp.getValue() - type.byteAmount);
+        writeMemory(esp.getValue(), data);
     }
 
-    public void popStack(Operand operand, int byteAmount) {
-        if(operand == null) {
-            esp.setValue(esp.getValue() + 4);
-            return;
-        }
+    public int popStack() {
         int data = mmu.readMemory(esp.getValue());
-        operand.setValue(data);
-        esp.setValue(esp.getValue() + byteAmount);
+        esp.setValue(esp.getValue() + 4);
+        return data;
     }
 
     public void writeMemory(int address, int data) {
