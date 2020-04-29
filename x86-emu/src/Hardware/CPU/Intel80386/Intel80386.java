@@ -50,10 +50,20 @@ public class Intel80386 implements CPU {
 
     public void pushStack(Operand operand, int byteAmount) {
         esp.setValue(esp.getValue() - byteAmount);
-        setMemory(esp.getValue(), operand.getValue());
+        writeMemory(esp.getValue(), operand.getValue());
     }
 
-    public void setMemory(int address, int data) {
+    public void popStack(Operand operand, int byteAmount) {
+        if(operand == null) {
+            esp.setValue(esp.getValue() + 4);
+            return;
+        }
+        int data = mmu.readMemory(esp.getValue());
+        operand.setValue(data);
+        esp.setValue(esp.getValue() + byteAmount);
+    }
+
+    public void writeMemory(int address, int data) {
         mmu.writeMemory(address, data);
         
     }
