@@ -4,24 +4,26 @@ import Hardware.CPU.CPU;
 import Hardware.CPU.Intel80386.Instructions.Instruction;
 import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
 
-public class PUSH implements Instruction {
+public class CDQ implements Instruction {
 
     Intel80386 cpu;
-    Operand src;
 
-    public PUSH(Intel80386 cpu, Operand src) {
+    public CDQ(Intel80386 cpu) {
         this.cpu = cpu;
-        this.src = src;
     }
 
     @Override
     public void execute() {
-        cpu.pushStack(src, 4);
+        int eaxValue = cpu.eax.getValue();
+        if(eaxValue < 0)
+            cpu.edx.setValue(0xFFFFFFFF);
+        else
+            cpu.edx.setValue(0);
     }
 
     @Override
     public String toString() {
-        return String.format("PUSH %s", src.toString());
+        return String.format("CDQ");
     }
 
 }
