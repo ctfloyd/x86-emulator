@@ -14,7 +14,15 @@ public class MMU {
     }
 
     public void writeMemory(int address, int data) {
-        memory.write(address, data);
+        memory.write(translateToPhysical(address), data);
+    }
+
+    public int readMemory(int address) {
+        return memory.read(translateToPhysical(address));
+    }
+
+    public int translateToPhysical(int vAddress) {
+        return address;
     }
 
 }
