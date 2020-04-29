@@ -1,5 +1,7 @@
 package Hardware.CPU.Intel80386.Registers.Flags;
 
+import Util.DataType;
+
 public class Flags {
 
     public static final int MASK_CARRY = 0x1;
@@ -19,7 +21,7 @@ public class Flags {
     // Public because getters and setters here would be obnoxious
     public boolean CF; // carry flag
     public boolean PF; // parity flag
-    public boolean AF; // auxillary carry
+    public boolean AF; // auxiliary carry
     public boolean ZF; // zero flag
     public boolean SF; // sign flag
     public boolean TF; // trap flag
@@ -29,7 +31,7 @@ public class Flags {
     public boolean NT; // nested task flags
     public boolean RF; // resume flag
     public boolean VM; // Virtual 8086 mode
-    public byte IO; // I/O privelege level (2 bits)
+    public byte IO; // I/O privilege level (2 bits)
 
     public void clear() {
         CF = false;
@@ -97,6 +99,33 @@ public class Flags {
         if((mask & MASK_IOCONTROL) != 0)
             IO = (byte)(value & MASK_IOCONTROL);
 
+    }
+
+    public void setSZP(int value, DataType type) {
+        if(type == DataType.Byte) {
+    		SF = (value & 0x80) != 0;
+    		ZF = (value & 0xFF) == 0;
+    		PF = findParity(value);
+        } else if(type == DataType.Word) {
+        	SF = (value & 0x8000) != 0;
+        	ZF = (value & 0xFFFF) == 0;
+        	PF = findParity(value);
+        } else if(type == DataType.DoubleWord) {
+        	SF = (value & 0x80000000) != 0;
+        	ZF = value == 0;
+        	PF = findParity(value);
+        }
+    }
+    
+    private boolean findParity(int value) {
+    	int bits = 0;
+    	int mask = 0x1;
+    	for(int i = 0; i < 8; i++) {
+    		if((value & mask) == 1)
+    			bits++;
+    		mask = mask << 1;
+    	}
+    	return (bits % 2) == 0;
     }
 
     @Override
