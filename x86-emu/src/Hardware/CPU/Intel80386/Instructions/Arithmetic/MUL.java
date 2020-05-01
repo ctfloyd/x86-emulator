@@ -5,13 +5,13 @@ import Hardware.CPU.Intel80386.Instructions.Instruction;
 import Hardware.CPU.Intel80386.Instructions.Operands.Operand;
 import Util.DataType;
 
-public class NEG implements Instruction {
+public class MUL implements Instruction {
 
 	Intel80386 cpu;
 	Operand src;
 	DataType srcType;
 	
-	public NEG(Intel80386 cpu, Operand src, DataType srcType) {
+	public MUL(Intel80386 cpu, Operand src, DataType srcType) {
 		this.cpu = cpu;
 		this.src = src;
 		this.srcType = srcType;
@@ -19,25 +19,20 @@ public class NEG implements Instruction {
 	
 	@Override
 	public void execute() {
-		int srcValue = src.getValue();
-		int result = 0 - srcValue;
+		// TODO: check data type
+		long result = src.getValue() * cpu.eax.getValue();
 		
-		// See @ADD.java
 		// TODO: check data type and set flags accordingly
-		cpu.flags.setSZP(result, srcType);
-		cpu.flags.OF = (srcValue & 0x80000000) != (result & 0x80000000);
-		if(srcValue == 0)
-			cpu.flags.CF = false;
-		else
-			cpu.flags.CF = true;
+		cpu.flags.OF = cpu.flags.CF = (result & 0xFFFFFFFF00000000l) != 0; 
 
-		src.setValue(result);
+		cpu.edx.setValue((int)(result >>> 32));
+		cpu.eax.setValue((int)(result & 0xffffffff));
 
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("CMP %s", src);
+		return String.format("MUL %s eax", src);
 	}
 
 }
